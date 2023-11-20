@@ -1,0 +1,6 @@
+FILENAME;ID
+test0001.pdf;30001;11;con mas campos (OK)
+test0001.pdf;30002;(OK)
+test0001.pdf;;sin id (ERROR)
+test0001.pdf;30003;(OK)
+NODOC.txt;30005;sin documento  (ERROR)

@@ -1,0 +1,12 @@
+package com.cereixeira.connectors;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public abstract class AbstractFTPRemoteConnector implements IRemoteConnector {
+
+}

@@ -1,0 +1,36 @@
+package com.cereixeira.job.report;
+
+import com.cereixeira.job.report.dto.ParamReportEntryDTO;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@RunWith(SpringRunner.class)
+@TestPropertySource(locations = {
+        "classpath:spring_batch-application.properties",
+        "classpath:databases-application.properties",
+        "classpath:report_entry-application-test.properties"
+        }
+    )
+@SpringBootApplication(scanBasePackages="com.cereixeira.job.report")
+public class ReportEntryJobLauncherIT {
+
+    @Autowired
+    private ReportEntryJobLauncher launcher;
+
+    @Test
+    public void test() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        ParamReportEntryDTO inputParamDTO = new ParamReportEntryDTO();
+        inputParamDTO.setExecuteName("uno");
+        inputParamDTO.setFolderPath("target/test-classes/");
+
+        launcher.run(inputParamDTO);
+    }
+}

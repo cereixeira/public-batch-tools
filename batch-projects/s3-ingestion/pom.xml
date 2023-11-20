@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>batch-projects</artifactId>
+        <groupId>org.cereixeira</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>s3-ingestion</artifactId>
+    <name>s3-ingestion</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+
+        <!-- INICIO S3-INGESTION -->
+        <dependency>
+            <groupId>org.cereixeira</groupId>
+            <artifactId>entry-job-s3</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.cereixeira</groupId>
+            <artifactId>execute-block-job-s3</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- FIN S3-INGESTION -->
+
+        <dependency>
+            <groupId>org.cereixeira</groupId>
+            <artifactId>report-job</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>config</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/config</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>libs/</classpathPrefix>
+                            <mainClass>com.cereixeira.batch.ingestion.S3Ingestion</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>generate Application</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${basedir}/target/destination-folder" />
+                                <mkdir dir="${basedir}/target/destination-folder/config" />
+                                <mkdir dir="${basedir}/target/destination-folder/libs" />
+                                <copy todir="${basedir}/target/destination-folder">
+                                    <fileset dir="${basedir}/target" includes="*-ingestion-*.jar" />
+                                    <fileset dir="${basedir}/scripts" includes="*.*" />
+                                </copy>
+                                <copy todir="${basedir}/target/destination-folder/libs">
+                                    <fileset dir="${basedir}/target/libs" includes="**" />
+                                </copy>
+                                <copy todir="${basedir}/target/destination-folder/config">
+                                    <fileset dir="${basedir}/target/config" includes="**" />
+                                </copy>
+                            </target>
+                        </configuration>
+
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

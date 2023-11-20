@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <timestamp key="timestamp" datePattern="yyyyMMdd"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/logs/entry-${timestamp}.log</file>
+        <append>true</append>
+        <immediateFlush>true</immediateFlush>
+        <encoder>
+            <pattern>%d{HH:mm:ss:SSS} [%t] %-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.FileAppender">
+        <file>target/logs/entry-ERROR-${timestamp}.log</file>
+        <append>true</append>
+        <immediateFlush>true</immediateFlush>
+        <encoder>
+            <pattern>%d{HH:mm:ss:SSS} %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.cereixeira.job.entry.error" level="ERROR" additivity="false">
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+
+    <logger name="com.cereixeira.job.entry" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="com.cereixeira.databases" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

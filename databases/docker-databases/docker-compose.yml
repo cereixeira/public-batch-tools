@@ -1,0 +1,17 @@
+version: '2'
+services:
+
+  mysql-ingestion:
+    build: ./db
+    environment:
+      MYSQL_ROOT_PASSWORD: testUser
+      MYSQL_DATABASE: ingestion
+      MYSQL_USER: testUser
+      MYSQL_PASSWORD: testUser
+    ports:
+      - "3309:3306"
+
+#networks:
+#  default:
+#    name: ingestion_network
+#    external: true

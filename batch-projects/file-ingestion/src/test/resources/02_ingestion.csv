@@ -1,0 +1,9 @@
+FILENAME;ID
+test0001.pdf;20001;duplicada 1 (OK)
+test0001.pdf;20001;duplicada 2 (ERROR)
+;20003;sin documento (ERROR)
+test0001.pdf;20002;(OK)
+test0001.pdf;20003_test_duplidado;duplicada 1 (OK)
+test0001.pdf;20003_test_duplidado;duplicada 2 (ERROR)
+test0001.pdf;20004;(OK)
+test0001.pdf;20005;(OK)(Nuevo)

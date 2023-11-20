@@ -1,0 +1,42 @@
+version: '2.1'
+services:
+
+  ftp-server:
+    image: stilliard/pure-ftpd
+    ports:
+      - "21:21"
+      - "30000-30010:30000-30010"
+    volumes:
+      - ./migracion:/home/migracion
+    environment:
+      PUBLICHOST: "0.0.0.0"
+      FTP_USER_NAME: dxcuser
+      FTP_USER_PASS: dxcuser
+      FTP_USER_HOME: /home
+      FTP_MAX_CLIENTS: 50
+      FTP_MAX_CONNECTIONS: 50
+      #ADDED_FLAGS: "--tls=2"
+      #TLS_CN: "localhost"
+      #TLS_ORG: "dxc"
+      #TLS_C: "ES"
+    #restart: always
+
+  openssh-server:
+    build: ./ssh
+    volumes:
+      - ./migracion:/home/migracion
+    ports:
+      - "22:22"
+      - "30011-30020:30011-30020"
+
+  s3-mock:
+    image: findify/s3mock:latest
+    ports:
+      - "8001:8001"
+    environment:
+      - S3MOCK_DATA_DIR=/tmp/s3mock
+    volumes:
+      - ./migracion:/tmp/s3mock
+
+
+
